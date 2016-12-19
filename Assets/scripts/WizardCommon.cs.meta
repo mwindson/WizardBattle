@@ -1,10 +1,17 @@
 fileFormatVersion: 2
 guid: 420b1b9f833fd404785f001962382d0a
-timeCreated: 1435417911
+timeCreated: 1482064377
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - blood_red: {instanceID: 0}
+  - blood_black: {instanceID: 0}
+  - potionHP: {fileID: 1000012970591572, guid: 7cafb89b5a0f61f479d0a748962abbbc, type: 2}
+  - potionSpeed: {fileID: 1000013846074356, guid: 11e31a2ebb4e6e246bcf8c0ba034a031,
+      type: 2}
+  - potionDMG: {fileID: 1000013317980782, guid: 2cf6690298568294cb6b655c0a3aeb87,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

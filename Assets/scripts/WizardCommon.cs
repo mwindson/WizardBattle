@@ -8,9 +8,12 @@ public class WizardCommon : MonoBehaviour {
 
 	private float nextDamageTime = 0.0f;
 	public float HP;
-	public bool locked;
+    private float[] probs;
+    public GameObject[] potion_objs;
+    public bool locked;
 	public Texture2D blood_red;
 	public Texture2D blood_black;
+    public GameObject potionHP, potionSpeed, potionDMG;
 
 	private bool dead;
 
@@ -18,7 +21,9 @@ public class WizardCommon : MonoBehaviour {
 		HP = initialHP;
 		locked = false;
 		dead = false;
-	}
+        probs = new float[3] { 0.5F, 0.4F, 0.2F };
+        potion_objs = new GameObject[3] { potionHP, potionSpeed, potionDMG };
+    }
 
 	void FixedUpdate(){
 		if ((transform.position - new Vector3 (0, 0, 0)).magnitude > 15) {
@@ -53,12 +58,37 @@ public class WizardCommon : MonoBehaviour {
 	public void resetHP(){
 		HP = initialHP;
 	}
+    
+    public int Choose(float[] probs)
+    {
+        float total = 0;
 
-	public void minusHP(int minus){
+        for (int i=0;i<probs.Length;i++)
+        {
+            total += probs[i];
+        }
+
+        float randomPoint = Random.value * total;
+
+        for (int j = 0; j < probs.Length; j++)
+        {
+            if (randomPoint < probs[j])
+                return j;
+            else
+                randomPoint -= probs[j];
+        }
+
+        return probs.Length - 1;
+    }
+    public void minusHP(int minus){
 		HP -= minus;
 		if (HP < 0 ) HP = 0;
 		if (HP == 0 && !dead && this.CompareTag ("AI")) { // 如果一个AI死亡, 则执行game中的rival_dead
 			dead = true;
+            if (Random.value <= 0.8)
+            {
+                Instantiate(potion_objs[Choose(probs)], new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+            }
 			Game game = GameObject.FindWithTag ("GameController").GetComponent<Game> ();
 			game.rival_dead (1);
 		}
