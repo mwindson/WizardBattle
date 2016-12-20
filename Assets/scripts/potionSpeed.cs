@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class potionHp : MonoBehaviour {
+public class potionSpeed : MonoBehaviour {
+
 	// Use this for initialization
 	void Start () {
 		
@@ -18,14 +19,8 @@ public class potionHp : MonoBehaviour {
         if (other.tag == "Player")
         {
             WizardCommon wizardcommon = other.gameObject.GetComponent<WizardCommon>();
-            if(wizardcommon.HP +5 < wizardcommon.initialHP)
-            {
-                wizardcommon.HP = wizardcommon.HP + 5;
-            }
-            else
-            {
-                wizardcommon.HP = wizardcommon.initialHP;
-            }
+            wizardcommon.speed += 3;
+            wizardcommon.speedBuffTime = 500;
             Destroy(this.gameObject);
         }
     }

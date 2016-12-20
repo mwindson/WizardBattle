@@ -11,6 +11,7 @@ public class Game : MonoBehaviour
 	public GameObject PlayerKnightPrefab, PlayerMagicianPrefab, PlayerPriestPrefab;
 	public Text HPDisplay;
 	public GameObject introText;
+    public int emenyNum=3;
 
 	private static string chooseCharacterText = "" +
 		"Choose number of your rivals:\n" +
@@ -76,9 +77,9 @@ public class Game : MonoBehaviour
 			}
 		} else if (state == 3) {
 			// 玩家正在游戏中
-			if (rivalCount == 0) { // 对手全部死亡, 玩家获得胜利
-				changeStateTo (5);
-			}
+//			if (rivalCount == 0) { // 对手全部死亡, 玩家获得胜利
+//				changeStateTo (5);
+//			}
 		} else if (state == 4 || state == 5) {
 			if (Input.GetKeyDown (KeyCode.R)) {
 				restart ();
@@ -119,9 +120,14 @@ public class Game : MonoBehaviour
 		for (int i = 0; i < Plyaer_list.Length; i++) {
 			Destroy (Plyaer_list [i]);
 		}
-
-		// 改变游戏状态
-		changeStateTo (1);
+        // 清理道具
+        GameObject[] Potion_list = GameObject.FindGameObjectsWithTag("potion");
+        for (int i = 0; i < Potion_list.Length; i++)
+        {
+            Destroy(Potion_list[i]);
+        }
+        // 改变游戏状态
+        changeStateTo (1);
 	}
 
 	public void selectPlayer (string type)
@@ -169,11 +175,17 @@ public class Game : MonoBehaviour
 		}
 	}
 
+   
+
 	public void rival_dead (int num)
 	{
 		rivalCount -= num;
 		if (rivalCount == 0) {
-			do_victory ();
+
+            Debug.Log("emeny appear");
+            spawnAI(emenyNum);
+            Debug.Log("ok");
+			//do_victory ();
 		}
 	}
 

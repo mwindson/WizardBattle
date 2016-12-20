@@ -3,13 +3,17 @@ using System.Collections;
 
 public class WizardCommon : MonoBehaviour {
 	public float initialHP;
-	public int speed;
+	public int initialSpeed;
 	private float damageRate=0.3F;
+    private int initialGetDmg;
+    public int speedBuffTime = 0,dmgBuffTime=0;
 
 	private float nextDamageTime = 0.0f;
 	public float HP;
+    public int speed;
+    public int getDmg;  //收到的伤害
     private float[] probs;
-    public GameObject[] potion_objs;
+    private GameObject[] potion_objs;
     public bool locked;
 	public Texture2D blood_red;
 	public Texture2D blood_black;
@@ -19,13 +23,37 @@ public class WizardCommon : MonoBehaviour {
 
 	void Start(){
 		HP = initialHP;
+        if (gameObject.CompareTag("AI"))
+        {
+            this.initialGetDmg = 5;
+        }else
+        {
+            
+            this.initialGetDmg = 1;
+        }
+        getDmg = initialGetDmg;
+        speed = initialSpeed;
 		locked = false;
 		dead = false;
         probs = new float[3] { 0.5F, 0.4F, 0.2F };
-        potion_objs = new GameObject[3] { potionHP, potionSpeed, potionDMG };
+        potion_objs = new GameObject[3] { potionHP, potionSpeed, potionDMG }; 
     }
 
 	void FixedUpdate(){
+        if (speedBuffTime > 0)
+        {
+            speedBuffTime--;
+        }else
+        {
+            speed = initialSpeed;
+        }
+        if (dmgBuffTime > 0)
+        {
+            dmgBuffTime--;
+        }else
+        {
+            getDmg = initialGetDmg;
+        }
 		if ((transform.position - new Vector3 (0, 0, 0)).magnitude > 15) {
 			if (Time.time > nextDamageTime) {
 				nextDamageTime = Time.time + damageRate;
@@ -37,7 +65,7 @@ public class WizardCommon : MonoBehaviour {
 	void OnCollisionEnter(Collision other)
 	{
 		if (other.gameObject.CompareTag("fireball")) {
-			minusHP(1);
+			minusHP(getDmg);
 			// Debug.Log("HP is now " + HP);
 			locked = true;
 		}
@@ -56,7 +84,9 @@ public class WizardCommon : MonoBehaviour {
 	}
 
 	public void resetHP(){
-		HP = initialHP;
+        getDmg = initialGetDmg;
+        speed = initialSpeed;
+        HP = initialHP;
 	}
     
     public int Choose(float[] probs)
@@ -87,13 +117,31 @@ public class WizardCommon : MonoBehaviour {
 			dead = true;
             if (Random.value <= 0.8)
             {
-                Instantiate(potion_objs[Choose(probs)], new Vector3(0, 0, 0), new Quaternion(0, 0, 0, 0));
+                Instantiate(potion_objs[Choose(probs)], randomPos(), new Quaternion(0, 0, 0, 0));
             }
 			Game game = GameObject.FindWithTag ("GameController").GetComponent<Game> ();
 			game.rival_dead (1);
 		}
 	}
 
+    private Vector3 randomPos()
+    {
+        Vector3 pos;
+        float x, z, max_z;
+        x = Random.Range(-15f, 15f);
+        max_z = Mathf.Sqrt(225f - x * x);
+        z = Random.Range(-max_z, max_z);
+        while (Mathf.Abs(x) < 4F || Mathf.Abs(z) < 4F)
+        {
+            x = Random.Range(-15f, 15f);
+            max_z = Mathf.Sqrt(225f - x * x);
+            z = Random.Range(-max_z, max_z);
+        }
+
+        pos = new Vector3(x, 0, z);
+
+        return pos;
+    }
 	void OnGUI()
 	{
 		//得到NPC头顶在3D世界中的坐标

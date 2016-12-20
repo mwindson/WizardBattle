@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class potionHp : MonoBehaviour {
+public class potionDMG : MonoBehaviour {
+    private WizardCommon AIWC;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -17,15 +19,14 @@ public class potionHp : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
-            WizardCommon wizardcommon = other.gameObject.GetComponent<WizardCommon>();
-            if(wizardcommon.HP +5 < wizardcommon.initialHP)
+            GameObject[] AI_list = GameObject.FindGameObjectsWithTag("AI");
+            for(int i = 0; i < AI_list.Length; i++)
             {
-                wizardcommon.HP = wizardcommon.HP + 5;
+                AIWC = AI_list[i].GetComponent<WizardCommon>();
+                AIWC.getDmg += 5;
+                AIWC.dmgBuffTime = 500;
             }
-            else
-            {
-                wizardcommon.HP = wizardcommon.initialHP;
-            }
+
             Destroy(this.gameObject);
         }
     }
