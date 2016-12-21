@@ -23,8 +23,8 @@ public class potionDMG : MonoBehaviour {
             for(int i = 0; i < AI_list.Length; i++)
             {
                 AIWC = AI_list[i].GetComponent<WizardCommon>();
-                AIWC.getDmg += 5;
-                AIWC.dmgBuffTime = 500;
+                // AIWC.getDmg += 5;
+                AIWC.attackBuffTime = 500;
             }
 
             Destroy(this.gameObject);

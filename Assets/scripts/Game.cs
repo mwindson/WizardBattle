@@ -5,13 +5,13 @@ using UnityEngine.UI;
 public class Game : MonoBehaviour
 {
 	public Text mainText;
-	public GameObject visual;
+    public GameObject visual;
 	// public WizardController wizard;
 	public GameObject AI_KnightPrefab, AI_MagicianPrefab, AI_PriestPrefab;
 	public GameObject PlayerKnightPrefab, PlayerMagicianPrefab, PlayerPriestPrefab;
 	public Text HPDisplay;
 	public GameObject introText;
-    public int emenyNum=3;
+    public int enemyCount = 3;
 
 	private static string chooseCharacterText = "" +
 		"Choose number of your rivals:\n" +
@@ -116,9 +116,9 @@ public class Game : MonoBehaviour
 			Destroy (AI_list [i]);
 		}
 		// 清理玩家
-		GameObject[] Plyaer_list = GameObject.FindGameObjectsWithTag ("Player");
-		for (int i = 0; i < Plyaer_list.Length; i++) {
-			Destroy (Plyaer_list [i]);
+		GameObject[] Player_list = GameObject.FindGameObjectsWithTag ("Player");
+		for (int i = 0; i < Player_list.Length; i++) {
+			Destroy (Player_list [i]);
 		}
         // 清理道具
         GameObject[] Potion_list = GameObject.FindGameObjectsWithTag("potion");
@@ -135,13 +135,13 @@ public class Game : MonoBehaviour
 		if (state == 1) {
 			if (type == "magician") {
 				GameObject player = Instantiate (PlayerMagicianPrefab, new Vector3 (), new Quaternion ()) as GameObject;
-				player.GetComponent<WizardCommon> ().resetHP ();
+				player.GetComponent<WizardCommon> ().resetProperties ();
 			} else if (type == "knight") {
 				GameObject player = Instantiate (PlayerKnightPrefab, new Vector3 (), new Quaternion ()) as GameObject;
-				player.GetComponent<WizardCommon> ().resetHP ();
+				player.GetComponent<WizardCommon> ().resetProperties ();
 			} else if (type == "priest") {
 				GameObject player = Instantiate (PlayerPriestPrefab, new Vector3 (), new Quaternion ()) as GameObject;
-				player.GetComponent<WizardCommon> ().resetHP ();
+				player.GetComponent<WizardCommon> ().resetProperties ();
 			} else {
 				return;
 			}
@@ -183,7 +183,7 @@ public class Game : MonoBehaviour
 		if (rivalCount == 0) {
 
             Debug.Log("emeny appear");
-            spawnAI(emenyNum);
+            spawnAI(enemyCount);
             Debug.Log("ok");
 			//do_victory ();
 		}
