@@ -2,124 +2,167 @@
 using System.Collections;
 using UnityEngine.UI;
 
+class Texts
+{
+    public static readonly string CHOOSE_DIFFICULTY = "" +
+            "Choose number of your rivals:\n" +
+            "A. 1\n" +
+            "B. 3\n" +
+            "C. 5\n";
+    public static readonly string CHOOSE_WIZARD = "" +
+       "Click On your character\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+    public static readonly string LOSE = "GAME OVER.\nPress R to try again.";
+    public static readonly string VICTORY = "Victory!\nPress R to play again.";
+}
+
+
+// 用于管理游戏生命周期的类. 使用状态机的思路进行实现.
 public class Game : MonoBehaviour
 {
-	public Text mainText;
+    public enum Diffculty
+    {
+        easy, normal, hard
+    }
+    public enum State
+    {
+        // 正在选择游戏角色
+        CHOOSING_WIZARD,
+        // 正在选择难度(AI数量)
+        CHOOSING_DIFFICULTY,
+        // 正在游戏中
+        PLAYING,
+        // 用户操作的角色死亡, 用户挑战失败
+        LOSE,
+        // 用户消灭了所有其他对手,获得了胜利
+        VICTORY,
+    }
+
+    // 当前游戏的阶段
+    public State state;
+    // 当前游戏波数
+    public int wave;
+    // 当前的游戏难度
+    Diffculty difficulty;
+    // 当前剩下的敌人数量
+    private int rivalCount;
+    // 当前的分数
+    public int score = 0;
+
+    // 文本
+    public Text mainText;
+    public Text HPDisplay;
+    public GameObject introText;
+    // 摄像头
     public GameObject visual;
-	// public WizardController wizard;
-	public GameObject AI_KnightPrefab, AI_MagicianPrefab, AI_PriestPrefab;
-	public GameObject PlayerKnightPrefab, PlayerMagicianPrefab, PlayerPriestPrefab;
-	public Text HPDisplay;
-	public GameObject introText;
-    public int enemyCount = 3;
+    // 选取角色的对象
+    public GameObject characterDisplay;
+    // prefabs
+    public GameObject AI_KnightPrefab, AI_MagicianPrefab, AI_PriestPrefab;
+    public GameObject PlayerKnightPrefab, PlayerMagicianPrefab, PlayerPriestPrefab;
 
-	private static string chooseCharacterText = "" +
-		"Choose number of your rivals:\n" +
-		"A. 1\n" +
-		"B. 3\n" +
-		"C. 5\n";
-	private static string chooseWizardText = "" +
-		"Click On your character\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-	private static string gameOverText = "GAME OVER.\nPress R to try again.";
-	private static string victoryText = "Victory!\nPress R to play again.";
-	private GameObject characterDisplay;
+    // Use this for initialization
+    void Start()
+    {
+        restart();
+    }
 
-	// choosing_wizard表示用户正在选择游戏角色		---- 1
-	// choosing_rivals表示用户正在选择对手       	---- 2
-	// playing表示用户正在游戏中					---- 3
-	// dead表示用户操作的角色死亡, 用户挑战失败		---- 4
-	// victory表示用户消灭了所有其他对手,获得了胜利 	---- 5
-	public int state;
-	private int rivalCount; // 剩余敌人的数量
+    // Update is called once per frame
+    void Update()
+    {
+        if (state == State.CHOOSING_WIZARD)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    string select_name = hit.collider.gameObject.name;
+                    selectPlayer(select_name);
+                }
+            }
+        }
+        else if (state == State.CHOOSING_DIFFICULTY)
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                difficulty = Diffculty.easy;
+                changeStateTo(State.PLAYING);
+                startWave(0);
+            }
+            else if (Input.GetKeyDown(KeyCode.B))
+            {
+                difficulty = Diffculty.normal;
+                changeStateTo(State.PLAYING);
+                startWave(0);
+            }
+            else if (Input.GetKeyDown(KeyCode.C))
+            {
+                difficulty = Diffculty.hard;
+                changeStateTo(State.PLAYING);
+                startWave(0);
+            }
+        }
+        else if (state == State.PLAYING)
+        {
+            // 玩家正在游戏中
+            //			if (rivalCount == 0) { // 对手全部死亡, 玩家获得胜利
+            //				changeStateTo (5);
+            //			}
+        }
+        else if (state == State.LOSE || state == State.VICTORY)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                restart();
+            }
+        }
+    }
 
-	// Use this for initialization
-	void Start ()
-	{
-		characterDisplay = GameObject.FindWithTag ("CharacterDisplay");
-		restart ();
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-		if (state == 1) {
-			if (Input.GetMouseButtonDown (0)) {
-				Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-				RaycastHit hit;
-				if (Physics.Raycast (ray, out hit)) {
-					string select_name = hit.collider.gameObject.name;
-					selectPlayer (select_name);
-				}
-			}
-			// if (Input.GetKeyDown (KeyCode.M)) {
-			// 	spawnPlayer ("magician");
-			// 	changeStateTo (2);
-			// } else if (Input.GetKeyDown (KeyCode.K)) {
-			// 	spawnPlayer ("knight");
-			// 	changeStateTo (2);
-			// } else if (Input.GetKeyDown (KeyCode.P)) {
-			// 	spawnPlayer ("priest");
-			// 	changeStateTo (2);
-			// }
-		} else if (state == 2) {
-			if (Input.GetKeyDown (KeyCode.A)) {
-				spawnAI (1);
-				rivalCount = 1;
-				changeStateTo (3);
-			} else if (Input.GetKeyDown (KeyCode.B)) {
-				spawnAI (3);
-				rivalCount = 3;
-				changeStateTo (3);
-			} else if (Input.GetKeyDown (KeyCode.C)) {
-				spawnAI (5);
-				rivalCount = 5;
-				changeStateTo (3);
-			}
-		} else if (state == 3) {
-			// 玩家正在游戏中
-//			if (rivalCount == 0) { // 对手全部死亡, 玩家获得胜利
-//				changeStateTo (5);
-//			}
-		} else if (state == 4 || state == 5) {
-			if (Input.GetKeyDown (KeyCode.R)) {
-				restart ();
-			}
-		}
-	}
+    void changeStateTo(State state)
+    {
+        this.state = state;
+        if (state == State.CHOOSING_WIZARD)
+        {
+            mainText.text = Texts.CHOOSE_WIZARD;
+            visual.GetComponent<VisualController>().resetTransform();
+            characterDisplay.SetActive(true);
+            introText.SetActive(true);
+        }
+        else if (state == State.CHOOSING_DIFFICULTY)
+        {
+            mainText.text = Texts.CHOOSE_DIFFICULTY;
+            characterDisplay.SetActive(false);
+            introText.SetActive(false);
+        }
+        else if (state == State.PLAYING)
+        {
+            mainText.text = "";
+        }
+        else if (state == State.LOSE)
+        {
+            mainText.text = Texts.LOSE;
+        }
+        else if (state == State.VICTORY)
+        {
+            mainText.text = Texts.VICTORY;
+        }
+    }
 
-	void changeStateTo (int state)
-	{
-		this.state = state;
-		if (state == 1) {
-			mainText.text = chooseWizardText;
-			visual.GetComponent<VisualController> ().resetTransform ();
-			characterDisplay.SetActive (true);
-			introText.SetActive(true);
-		} else if (state == 2) {
-			mainText.text = chooseCharacterText;
-			characterDisplay.SetActive (false);
-			introText.SetActive(false);
-		} else if (state == 3) {
-			mainText.text = "";
-		} else if (state == 4) {
-			mainText.text = gameOverText;
-		} else if (state == 5) {
-			mainText.text = victoryText;
-		}
-	}
-
-	void restart ()
-	{
-		// 清理AI
-		GameObject[] AI_list = GameObject.FindGameObjectsWithTag ("AI");
-		for (int i = 0; i < AI_list.Length; i++) {
-			Destroy (AI_list [i]);
-		}
-		// 清理玩家
-		GameObject[] Player_list = GameObject.FindGameObjectsWithTag ("Player");
-		for (int i = 0; i < Player_list.Length; i++) {
-			Destroy (Player_list [i]);
-		}
+    void restart()
+    {
+        // 清理AI
+        GameObject[] AI_list = GameObject.FindGameObjectsWithTag("AI");
+        for (int i = 0; i < AI_list.Length; i++)
+        {
+            Destroy(AI_list[i]);
+        }
+        // 清理玩家
+        GameObject[] Player_list = GameObject.FindGameObjectsWithTag("Player");
+        for (int i = 0; i < Player_list.Length; i++)
+        {
+            Destroy(Player_list[i]);
+        }
         // 清理道具
         GameObject[] Potion_list = GameObject.FindGameObjectsWithTag("potion");
         for (int i = 0; i < Potion_list.Length; i++)
@@ -127,80 +170,106 @@ public class Game : MonoBehaviour
             Destroy(Potion_list[i]);
         }
         // 改变游戏状态
-        changeStateTo (1);
-	}
+        changeStateTo(State.CHOOSING_WIZARD);
+    }
 
-	public void selectPlayer (string type)
-	{ // 生成玩家的角色
-		if (state == 1) {
-			if (type == "magician") {
-				GameObject player = Instantiate (PlayerMagicianPrefab, new Vector3 (), new Quaternion ()) as GameObject;
-				player.GetComponent<WizardCommon> ().resetProperties ();
-			} else if (type == "knight") {
-				GameObject player = Instantiate (PlayerKnightPrefab, new Vector3 (), new Quaternion ()) as GameObject;
-				player.GetComponent<WizardCommon> ().resetProperties ();
-			} else if (type == "priest") {
-				GameObject player = Instantiate (PlayerPriestPrefab, new Vector3 (), new Quaternion ()) as GameObject;
-				player.GetComponent<WizardCommon> ().resetProperties ();
-			} else {
-				return;
-			}
-			changeStateTo (2);
-		}
-	}
+    public void selectPlayer(string type)
+    { // 生成玩家的角色
+        if (state == State.CHOOSING_WIZARD)
+        {
+            if (type == "magician")
+            {
+                GameObject player = Instantiate(PlayerMagicianPrefab, new Vector3(), new Quaternion()) as GameObject;
+                player.GetComponent<WizardCommon>().resetProperties();
+            }
+            else if (type == "knight")
+            {
+                GameObject player = Instantiate(PlayerKnightPrefab, new Vector3(), new Quaternion()) as GameObject;
+                player.GetComponent<WizardCommon>().resetProperties();
+            }
+            else if (type == "priest")
+            {
+                GameObject player = Instantiate(PlayerPriestPrefab, new Vector3(), new Quaternion()) as GameObject;
+                player.GetComponent<WizardCommon>().resetProperties();
+            }
+            else
+            {
+                return;
+            }
+            changeStateTo(State.CHOOSING_DIFFICULTY);
+        }
+    }
 
-	void spawnAI (int num)
-	{
-		Vector3 pos;
-		Quaternion rotation = new Quaternion (0, 0, 0, 0);
-		float x, z, max_z;
-		Random.seed = (int)(Time.time);
+    void spawnAI(int num)
+    {
+        float x, z, max_z;
+        Random.InitState((int)Time.time);
 
-		for (int i = 0; i < num; i++) {
-			x = Random.Range (-15f, 15f);
-			max_z = Mathf.Sqrt (225f - x * x);
-			z = Random.Range (-max_z, max_z);
-			while (Mathf.Abs(x) < 4F || Mathf.Abs(z) < 4F) {
-				x = Random.Range (-15f, 15f);
-				max_z = Mathf.Sqrt (225f - x * x);
-				z = Random.Range (-max_z, max_z);
-			}
+        for (int i = 0; i < num; i++)
+        {
+            do
+            {
+                x = Random.Range(-15f, 15f);
+                max_z = Mathf.Sqrt(225f - x * x);
+                z = Random.Range(-max_z, max_z);
+            } while (Mathf.Abs(x) < 4F || Mathf.Abs(z) < 4F);
 
-			pos = new Vector3 (x, 0, z);
-			// Instantiate (AI_PriestPrefab, pos, rotation);
-			if(Random.value < 0.5)
-				Instantiate(AI_MagicianPrefab, pos, rotation);
-			else
-				Instantiate(AI_PriestPrefab, pos, rotation);
-		}
-	}
+            // 随机选择一种类型
+            GameObject AIPrefab = Random.value < 0.5 ? AI_MagicianPrefab : AI_PriestPrefab;
+            GameObject AI = Instantiate(AIPrefab, new Vector3(x, 0, z), new Quaternion(0, 0, 0, 0));
+            WizardCommon wizard = AI.GetComponent<WizardCommon>();
+            // 根据当前波数来提升AI的战斗力
+            wizard.initialAttack += wave;
+            wizard.initialHP += wave * 2;
+        }
+        rivalCount += num;
+    }
 
-   
+    // 每次敌人死亡的时候, 该函数将被调用
+    public void rivalDead(int num)
+    {
+        rivalCount -= num;
+        score += (wave + 1) * num;
+        if (rivalCount == 0)
+        {
+            // Debug.Log("emeny appear");
+            // Debug.Log("ok");
+            // 开始新一波的AI
+            startWave(wave + 1);
+        }
+    }
 
-	public void rival_dead (int num)
-	{
-		rivalCount -= num;
-		if (rivalCount == 0) {
+    public void startWave(int wave)
+    {
+        this.wave = wave;
+        int num;
+        if (difficulty == Diffculty.easy)
+        {
+            num = 1;
+        }
+        else if (difficulty == Diffculty.normal)
+        {
+            num = 3;
+        }
+        else
+        {
+            num = 5;
+        }
+        spawnAI(num);
+    }
 
-            Debug.Log("emeny appear");
-            spawnAI(enemyCount);
-            Debug.Log("ok");
-			//do_victory ();
-		}
-	}
+    public bool is_started()
+    {
+        return state == State.PLAYING;
+    }
 
-	public bool is_started ()
-	{
-		return state == 3;
-	}
+    public void do_gameover()
+    {
+        changeStateTo(State.LOSE);
+    }
 
-	public void do_gameover ()
-	{
-		changeStateTo (4);
-	}
-
-	public void do_victory ()
-	{
-		changeStateTo (5);
-	}
+    public void do_victory()
+    {
+        changeStateTo(State.VICTORY);
+    }
 }

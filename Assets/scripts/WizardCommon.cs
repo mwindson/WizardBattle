@@ -144,7 +144,7 @@ public class WizardCommon : MonoBehaviour
                 Instantiate(potion_objs[Choose(probs)], randomPos(), new Quaternion(0, 0, 0, 0));
             }
             Game game = GameObject.FindWithTag("GameController").GetComponent<Game>();
-            game.rival_dead(1);
+            game.rivalDead(1);
         }
     }
     // 药水随机出现地点
