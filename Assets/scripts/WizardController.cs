@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class WizardController : MonoBehaviour {
-	public Text HPDisplay;
+	public GameObject playUI;
 	private Game game;
 
 	private Vector3 click_point;
@@ -12,7 +12,7 @@ public class WizardController : MonoBehaviour {
 	void Start(){
 		wizardCommon = GetComponent<WizardCommon> ();
 		game = GameObject.FindWithTag ("GameController").GetComponent<Game>();
-		HPDisplay = game.HPDisplay;
+		playUI = game.playUI;
 	}
 
 	void Update(){
@@ -36,10 +36,10 @@ public class WizardController : MonoBehaviour {
 		}
 
 		// 更新HP的显示
-		if(wizardCommon.HP > 0)
-			HPDisplay.text = "HP: " + wizardCommon.HP +  " Score: " + game.score;
-		else
-			HPDisplay.text = "Dead";
+		//if(wizardCommon.HP > 0)
+			playUI.GetComponentInChildren<UILabel>().text = " Score: " + game.score;
+		//else
+			// HPDisplay.text = "Dead";
 
 		// 如果玩家死亡, 游戏进入gameover阶段
 		if (game.is_started () && wizardCommon.HP == 0) {

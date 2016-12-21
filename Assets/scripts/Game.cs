@@ -48,10 +48,10 @@ public class Game : MonoBehaviour
     // 当前的分数
     public int score = 0;
 
-    // 文本
+    // UI
     public Text mainText;
-    public Text HPDisplay;
-    public GameObject introText;
+    public GameObject playUI;
+    public GameObject chooseUI;
     // 摄像头
     public GameObject visual;
     // 选取角色的对象
@@ -127,13 +127,15 @@ public class Game : MonoBehaviour
             mainText.text = Texts.CHOOSE_WIZARD;
             visual.GetComponent<VisualController>().resetTransform();
             characterDisplay.SetActive(true);
-            introText.SetActive(true);
+            chooseUI.SetActive(true);
+            playUI.SetActive(false);
         }
         else if (state == State.CHOOSING_DIFFICULTY)
         {
             mainText.text = Texts.CHOOSE_DIFFICULTY;
             characterDisplay.SetActive(false);
-            introText.SetActive(false);
+            chooseUI.SetActive(false);
+            playUI.SetActive(true);
         }
         else if (state == State.PLAYING)
         {
