@@ -207,6 +207,7 @@ public class Game : MonoBehaviour
 
         for (int i = 0; i < num; i++)
         {
+            // 随机选择出生地点
             do
             {
                 x = Random.Range(-15f, 15f);
