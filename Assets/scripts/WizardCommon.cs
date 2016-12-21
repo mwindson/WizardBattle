@@ -147,7 +147,7 @@ public class WizardCommon : MonoBehaviour
             game.rival_dead(1);
         }
     }
-
+    // 药水随机出现地点
     private Vector3 randomPos()
     {
         Vector3 pos;
@@ -155,12 +155,6 @@ public class WizardCommon : MonoBehaviour
         x = Random.Range(-15f, 15f);
         max_z = Mathf.Sqrt(225f - x * x);
         z = Random.Range(-max_z, max_z);
-        while (Mathf.Abs(x) < 4F || Mathf.Abs(z) < 4F)
-        {
-            x = Random.Range(-15f, 15f);
-            max_z = Mathf.Sqrt(225f - x * x);
-            z = Random.Range(-max_z, max_z);
-        }
 
         pos = new Vector3(x, 0, z);
 

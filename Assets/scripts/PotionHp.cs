@@ -18,15 +18,18 @@ public class potionHp : MonoBehaviour {
         if (other.tag == "Player")
         {
             WizardCommon wizardcommon = other.gameObject.GetComponent<WizardCommon>();
-            if(wizardcommon.HP +5 < wizardcommon.initialHP)
+            if (wizardcommon.HP < wizardcommon.initialHP)
             {
-                wizardcommon.HP = wizardcommon.HP + 5;
+                if (wizardcommon.HP + 5 < wizardcommon.initialHP)
+                {
+                    wizardcommon.HP = wizardcommon.HP + 5;
+                }
+                else
+                {
+                    wizardcommon.HP = wizardcommon.initialHP;
+                }
+                Destroy(this.gameObject);
             }
-            else
-            {
-                wizardcommon.HP = wizardcommon.initialHP;
-            }
-            Destroy(this.gameObject);
         }
     }
 }
