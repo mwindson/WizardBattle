@@ -37,7 +37,7 @@ public class WizardController : MonoBehaviour {
 
 		// 更新HP的显示
 		if(wizardCommon.HP > 0)
-			HPDisplay.text = "HP: " + wizardCommon.HP;
+			HPDisplay.text = "HP: " + wizardCommon.HP +  " Score: " + game.score;
 		else
 			HPDisplay.text = "Dead";
 
