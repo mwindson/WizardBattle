@@ -7,7 +7,9 @@ public class easyAI : MonoBehaviour {
 	// Use this for initialization
 	private GameObject player ;
     public bool isActive;
+
 	void Start () {
+        isActive = true;
 		Random.seed = (int)Mathf.Floor(Time.time);
 		player = GameObject.FindWithTag("Player");
 		Random.seed = (int)Time.time;

@@ -138,6 +138,7 @@ public class WizardCommon : MonoBehaviour
         if (HP < 0) HP = 0;
         if (HP == 0 && !dead && this.CompareTag("AI"))
         { // 如果一个AI死亡, 则执行game中的rival_dead
+            GetComponent<easyAI>().isActive = false;
             dead = true;
             if (Random.value <= 0.8)
             {
