@@ -153,8 +153,8 @@ public class WizardCommon : MonoBehaviour
     {
         Vector3 pos;
         float x, z, max_z;
-        x = Random.Range(-15f, 15f);
-        max_z = Mathf.Sqrt(225f - x * x);
+        x = Random.Range(-10f, 10f);
+        max_z = Mathf.Sqrt(100f - x * x);
         z = Random.Range(-max_z, max_z);
 
         pos = new Vector3(x, 0, z);
