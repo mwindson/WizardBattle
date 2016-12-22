@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 class Texts
 {
@@ -118,6 +119,11 @@ public class Game : MonoBehaviour
             {
                 restart();
             }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                SceneManager.UnloadScene("WizardBattle");
+                SceneManager.LoadScene("StartUI");
+            }
         }
     }
 
@@ -149,7 +155,7 @@ public class Game : MonoBehaviour
         else if (state == State.LOSE)
         {
             gameOverUI.SetActive(true);
-            gameOverUI.GetComponentInChildren<UILabel>().text += "得分：" + this.score + " 按R重新游戏";
+            gameOverUI.GetComponentInChildren<UILabel>().text += " 得分：" + this.score + "\n按R重新游戏\n按Q返回主菜单";
         }
         else if (state == State.VICTORY)
         {

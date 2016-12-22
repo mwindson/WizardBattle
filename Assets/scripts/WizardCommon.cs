@@ -164,6 +164,16 @@ public class WizardCommon : MonoBehaviour
 
     void OnGUI()
     {
+        string name;
+        if (tag == "AI")
+        {
+            name = "Enemy";
+        }
+        else
+        {
+            name = "Hero";
+        }
+
         //得到NPC头顶在3D世界中的坐标
         //默认NPC坐标点在脚底下，所以这里加上npcHeight它模型的高度即可
         Vector3 worldPosition = new Vector3(transform.position.x, transform.position.y + 4F, transform.position.z);
