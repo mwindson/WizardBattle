@@ -41,7 +41,8 @@ public class FireShoot : MonoBehaviour
         {
             lastShotTime = -1;
 
-            Vector3 spawnPos = transform.position + 1.2F * direction; // 火球生成的位置
+            Vector3 spawnPos = transform.position + 2f * direction; // 火球生成的位置
+            spawnPos.y += 1f + 0.1f; // 往上提升火球半径的距离
             GameObject shot = Instantiate(fireballType, spawnPos, new Quaternion()); // 生成火球
             shot.GetComponent<Rigidbody>().velocity = direction * fireballSpeed; // 设置速度
 
