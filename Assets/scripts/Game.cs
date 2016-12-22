@@ -155,7 +155,7 @@ public class Game : MonoBehaviour
         else if (state == State.LOSE)
         {
             gameOverUI.SetActive(true);
-            gameOverUI.GetComponentInChildren<UILabel>().text += " 得分：" + this.score + "\n按R重新游戏\n按Q返回主菜单";
+            gameOverUI.GetComponentInChildren<UILabel>().text = "GAME OVER! 得分：" + this.score + "\n按R重新游戏\n按Q返回主菜单";
         }
         else if (state == State.VICTORY)
         {
