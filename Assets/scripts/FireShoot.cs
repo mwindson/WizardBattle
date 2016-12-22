@@ -40,9 +40,9 @@ public class FireShoot : MonoBehaviour
         if (lastShotTime != -1 && lastShotTime + 0.5f < Time.time) // 这里的0.5表示"动作前摇"
         {
             lastShotTime = -1;
-
-            Vector3 spawnPos = transform.position + 2f * direction; // 火球生成的位置
-            spawnPos.y += 1f + 0.1f; // 往上提升火球半径的距离
+            // 人物的半径为0.75f, 下面的2.35f和1.6f决定了火球最大半径为1.5f
+            Vector3 spawnPos = transform.position + 2.35f * direction; // 火球生成的位置
+            spawnPos.y += 1.6f; // 往上提升一段距离. 使得火球飘在半空
             GameObject shot = Instantiate(fireballType, spawnPos, new Quaternion()); // 生成火球
             shot.GetComponent<Rigidbody>().velocity = direction * fireballSpeed; // 设置速度
 
