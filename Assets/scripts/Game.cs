@@ -49,9 +49,10 @@ public class Game : MonoBehaviour
     public int score = 0;
 
     // UI
-    public Text mainText;
-    public GameObject playUI;
+    public GameObject scoreUI;
     public GameObject chooseUI;
+    public GameObject diffcultUI;
+    public GameObject gameOverUI;
     // 摄像头
     public GameObject visual;
     // 选取角色的对象
@@ -105,6 +106,7 @@ public class Game : MonoBehaviour
         }
         else if (state == State.PLAYING)
         {
+
             // 玩家正在游戏中
             //			if (rivalCount == 0) { // 对手全部死亡, 玩家获得胜利
             //				changeStateTo (5);
@@ -119,35 +121,38 @@ public class Game : MonoBehaviour
         }
     }
 
+    // 根据状态控制UI
     void changeStateTo(State state)
     {
         this.state = state;
         if (state == State.CHOOSING_WIZARD)
         {
-            mainText.text = Texts.CHOOSE_WIZARD;
             visual.GetComponent<VisualController>().resetTransform();
             characterDisplay.SetActive(true);
             chooseUI.SetActive(true);
-            playUI.SetActive(false);
+            scoreUI.SetActive(false);
+            diffcultUI.SetActive(false);
+            gameOverUI.SetActive(false);
         }
         else if (state == State.CHOOSING_DIFFICULTY)
         {
-            mainText.text = Texts.CHOOSE_DIFFICULTY;
             characterDisplay.SetActive(false);
             chooseUI.SetActive(false);
-            playUI.SetActive(true);
+            scoreUI.SetActive(true);
+            diffcultUI.SetActive(true);
         }
         else if (state == State.PLAYING)
         {
-            mainText.text = "";
+            diffcultUI.SetActive(false);
+            scoreUI.SetActive(true);
         }
         else if (state == State.LOSE)
         {
-            mainText.text = Texts.LOSE;
+            gameOverUI.SetActive(true);
+            gameOverUI.GetComponentInChildren<UILabel>().text += "得分：" + this.score + " 按R重新游戏";
         }
         else if (state == State.VICTORY)
         {
-            mainText.text = Texts.VICTORY;
         }
     }
 
