@@ -1,0 +1,56 @@
+Initialize engine version: 5.5.0f3 (38b4efef76f0)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [igdumd32.dll 9.17.10.4229]
+    Renderer: Intel(R) HD Graphics
+    Vendor:   Intel
+    VRAM:     848 MB (via DXGI)
+    Caps:     Shader=30 DepthRT=1 NativeDepth=1 NativeShadow=1 DF16=1 INTZ=1 NULL=1 RESZ=1 SlowINTZ=0 ATOC=1 BC4=1 BC5=1
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\Assembly-UnityScript.dll (this message is harmless)
+Loading C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\Assembly-UnityScript.dll into Unity Child Domain
+Platform assembly: C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
+Loading C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
+Platform assembly: C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\Glow11.dll (this message is harmless)
+Loading C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\Glow11.dll into Unity Child Domain
+- Completed reload, in  0.630 seconds
+Platform assembly: C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: C:\Users\Administrator\Unity\WizardBattle\WizardBattle_Data\Managed\System.dll (this message is harmless)
+desktop: 1280x1024 60Hz; virtual: 1280x1024 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+WARNING: BC6H/BC7 texture format is not supported, decompressing texture
+UnloadTime: 3.183773 ms
+Setting up 1 worker threads for Enlighten.
+  Thread -> id: 1de4 -> priority: 1 
+Unloading 5 Unused Serialized files (Serialized files now loaded: 0)
+WARNING: BC6H/BC7 texture format is not supported, decompressing texture
+UnloadTime: 2.753651 ms
+
+Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 1735.
+Total: 27.073423 ms (FindLiveObjects: 0.133421 ms CreateObjectMapping: 0.075263 ms MarkObjects: 26.778280 ms  DeleteObjects: 0.085526 ms)
+
+Unloading the last loaded scene Assets/_Scenes/WizardBattle.unity(build index: 1), is not supported. Please use SceneManager.LoadScene()/EditorSceneManager.OpenScene() to switch to another scene.
+ 
+(Filename:  Line: 198)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+WARNING: BC6H/BC7 texture format is not supported, decompressing texture
+UnloadTime: 3.166046 ms
+
+Unloading 909 unused Assets to reduce memory usage. Loaded Objects now: 507.
+Total: 1.686277 ms (FindLiveObjects: 0.141818 ms CreateObjectMapping: 0.082727 ms MarkObjects: 0.508495 ms  DeleteObjects: 0.951679 ms)
+
+Game Start OnClick button
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/DebugBindings.gen.cpp Line: 51)
+
