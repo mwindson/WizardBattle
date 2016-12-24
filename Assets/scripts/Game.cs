@@ -45,7 +45,7 @@ public class Game : MonoBehaviour
     // 当前的游戏难度
     Diffculty difficulty;
     // 当前剩下的敌人数量
-    private int rivalCount;
+    // private int rivalCount;
     // 当前的分数
     public int score = 0;
 
@@ -236,15 +236,26 @@ public class Game : MonoBehaviour
             wizard.initialAttack += wave;
             wizard.initialHP += wave * 2;
         }
-        rivalCount += num;
+    }
+
+    private int getActiveAICount()
+    {
+        int activeAICount = 0;
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("AI"))
+        {
+            if (obj.GetComponent<easyAI>().isActive)
+            {
+                activeAICount += 1;
+            }
+        }
+        return activeAICount;
     }
 
     // 每次敌人死亡的时候, 该函数将被调用
     public void rivalDead(int num)
     {
-        rivalCount -= num;
         score += (wave + 1) * num;
-        if (rivalCount == 0)
+        if (getActiveAICount() == 0)
         {
             // Debug.Log("emeny appear");
             // Debug.Log("ok");

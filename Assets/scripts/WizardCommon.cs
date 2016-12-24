@@ -40,7 +40,7 @@ public class WizardCommon : MonoBehaviour
         attack = initialAttack;
         locked = false;
         dead = false;
-        probs = new float[3] { 0.5F, 0.4F, 0.2F };
+        probs = new float[3] { 0.7F, 0.4F, 0.2F };
         potion_objs = new GameObject[3] { potionHP, potionSpeed, potionDMG };
     }
 
